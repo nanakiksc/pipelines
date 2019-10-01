@@ -73,6 +73,7 @@ gatk CalculateContamination \
 fi
 
 gatk FilterMutectCalls \
+    --reference ${FASTA} \
     --variant 3_var/${TUMOR}.raw.vcf.gz \
     --contamination-table 3_var/filter_files/${TUMOR}_mn_${NORMAL}.contamination \
     --output 3_var/${TUMOR}.filtered.vcf.gz
