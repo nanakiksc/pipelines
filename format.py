@@ -43,6 +43,12 @@ def parse_variants(line, offset):
             cgi = '%s:%s' % (gene, protein.lstrip('p.'))
         elif len(split_annotation) == 4:
             gene, transcript, exon, dna = split_annotation
+        elif len(split_annotation) == 3 and 'wholegene' in split_annotation:
+            gene, transcript, _ = split_annotation
+            exon = dna = split_annotation[-1]
+        elif len(split_annotation) == 1:
+            gene = split_annotation[0]
+            transcript, exon, dna = ['NA'] * 3
         else:
             raise ValueError('Malformed annotation: %s' % annotation)
 
