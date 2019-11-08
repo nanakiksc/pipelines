@@ -1,6 +1,6 @@
 # Variant calling pipeline
 
-The following pipeline for variant calling is based on the [GATK Best Practices](https://software.broadinstitute.org/gatk/best-practices/). It starts from raw sequencing data in FASTQ format and produces a table containing the annotated variants. The corresponding scrips (in bash and Python) can be downloaded from [GitHub](https://github.com/nanakiksc/pipelines).
+The following pipeline for variant calling is based on the [GATK Best Practices](https://software.broadinstitute.org/gatk/best-practices/). It starts from raw sequencing data in FASTQ format and produces a table containing the annotated variants.
 
 Please note that the scripts contain local paths to the data resources files, so they must be edited to point to the files on your system.
 
@@ -23,7 +23,7 @@ Data:
 - Known indels annotation for reference genome
 
 ### Usage
-For pair-end sequencing reads use:
+For paired-end sequencing reads use:
 ```shell
 $ ./data_pre_pe.sh <sample_name>
 ```
@@ -35,7 +35,7 @@ $ ./data_pre_se.sh <sample_name>
 
 Where `<sample_name>` is the base name of the FASTQ files (without the extension). In the case of paired-end files, the script assumes that the base name is suffixed with _1 and _2 for the files containing the reads 1 and reads 2, respectively, therefore **the suffixes _1 and _2 must not be included in the base name**.
 
-This will produce the final file `<sample_name>.bam` and its corresponding BAI index.
+This will produce the alignments file `<sample_name>.bam` and its corresponding BAI index.
 
 ## 2. Variant calling
 
@@ -75,6 +75,8 @@ $ ./vc_germline.sh <sample_name>
 
 Where `<(normal_|tumor_)?sample_name>` are the base names of the BAM files (without the extension) of the normal and tumor samples, respectively. In the case of germline variant calling, any type of sample (normal or tumor) can be used, but only germline variants will be identified.
 
+This will produce the filtered variants file `<sample_name>.vcf.gz` and its corresponding tabix index.
+
 ## 3. Annotation
 
 The last part of the pipeline reads in the variants and annotates them against a database of known variants, performs a functional consequence annotation of coding variants, and adds gene-level information. The output is an (Excel-compatible) tab-separated table suitable for manual curation.
@@ -104,3 +106,5 @@ $ ./anno_germline.sh <sample_name>
 ```
 
 Where `<sample_name>` is the base names of the VCF files (without the extension).
+
+This will produce the annotated variants table `<sample_name>.xls` along with the annotated variants file `<sample_name>.anno.vcf.gz` and its corresponding tabix index.
